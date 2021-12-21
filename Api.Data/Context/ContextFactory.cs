@@ -7,7 +7,7 @@ namespace Api.Data.Context
     {
         public MyContext CreateDbContext(string[] args)
         {
-            var connectionString = "Default";
+            var connectionString = "Data Source=DbApi.db";
             var optionsBuilder = new DbContextOptionsBuilder<MyContext>();
             optionsBuilder.UseSqlite(connectionString);
             return new MyContext(optionsBuilder.Options);
