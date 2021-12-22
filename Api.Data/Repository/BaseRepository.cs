@@ -65,6 +65,11 @@ namespace Api.Data.Repository
             throw new NotImplementedException();
         }
 
+        public async Task<bool> ExistAsync(Guid id)
+        {
+            return await _dataset.AnyAsync(p => p.Id.Equals(id));
+        }
+
         public Task<IEnumerable<T>> SelectAsync()
         {
             throw new NotImplementedException();
