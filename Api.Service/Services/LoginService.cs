@@ -70,7 +70,11 @@ namespace Api.Service.Services
             }
             else
             {
-                return null;
+                return new
+                {
+                    authenticated = false,
+                    message = "Falha ao autenticar"
+                };
             }
 
         }
@@ -79,12 +83,12 @@ namespace Api.Service.Services
         {
             var securityToken = handler.CreateToken(new SecurityTokenDescriptor
             {
-                Issuer=_tokenConfiguration.Issuer,
-                Audience=_tokenConfiguration.Audience,
-                SigningCredentials=_signingConfiguration.SigningCredentials,
-                Subject=identity,
-                NotBefore=createDate,
-                Expires=expirationDate
+                Issuer = _tokenConfiguration.Issuer,
+                Audience = _tokenConfiguration.Audience,
+                SigningCredentials = _signingConfiguration.SigningCredentials,
+                Subject = identity,
+                NotBefore = createDate,
+                Expires = expirationDate
             });
 
             var token = handler.WriteToken(securityToken);
@@ -97,11 +101,11 @@ namespace Api.Service.Services
             {
                 authenticated = true,
                 created = createDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                expirationDate=expirationDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                accessToken=token,
-                userName=user.Email,
-                message="Usuario logado com sucesso"
-            }
+                expirationDate = expirationDate.ToString("yyyy-MM-dd HH:mm:ss"),
+                accessToken = token,
+                userName = user.Email,
+                message = "Usuario logado com sucesso"
+            };
         }
     }
 }
