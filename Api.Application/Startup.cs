@@ -140,6 +140,11 @@ namespace application
             {
                 endpoints.MapControllers();
             });
+
+            if (Environment.GetEnvironmentVariable("MIGRATION").ToLower() == "APLICAR".ToLower())
+            {
+                //DO THE MIGRATION
+            }
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Api.Data.Context;
 using Api.Data.Implementations;
 using Api.Data.Repository;
@@ -15,10 +16,20 @@ namespace Api.CrossCutting.DependencyInjection
             serviceCollection.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             serviceCollection.AddScoped<IUserRepository, UserImplementation>();
 
+            if (Environment.GetEnvironmentVariable("DATABASE").ToLower() == "SQLite".ToLower())
+            {
+                serviceCollection.AddDbContext<MyContext>(
+                    options => options.UseSqlite(Environment.GetEnvironmentVariable("DB_CONNECTION"))
+                );
+            }
+            else
+            {
+                serviceCollection.AddDbContext<MyContext>(
+                    options => options.UseSqlServer("Data Source=localhost;Initial Catalog=CursoNetApiDddDb;Integrated Security=True")
+                );
+            }
 
-            serviceCollection.AddDbContext<MyContext>(
-                options => options.UseSqlite("Data Source=D:\\repos\\Udemy\\NetCoreApiArquiteturaDDDnaPratica\\src\\Api.Data\\DbApi.db")
-            );
+
         }
     }
 }
