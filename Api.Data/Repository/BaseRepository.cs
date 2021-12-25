@@ -100,7 +100,7 @@ namespace Api.Data.Repository
                 if (result == null)
                     return null;
 
-                item.UpdateAt = DateTime.UtcNow;
+                item.UpdatedAt = DateTime.UtcNow;
                 item.CreatedAt = result.CreatedAt;
 
                 _context.Entry(result).CurrentValues.SetValues(item);
