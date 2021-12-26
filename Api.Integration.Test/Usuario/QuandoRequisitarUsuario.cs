@@ -65,6 +65,21 @@ namespace Api.Integration.Test.Usuario
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             Assert.NotEqual(registroPost.Name, registroAtualizado.Name);
+
+            //GET(Id)
+            response = await client.GetAsync($"{hostApi}users/{registroAtualizado.Id}");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            jsonResult = await response.Content.ReadAsStringAsync();
+            var registroSelecionado = JsonConvert.DeserializeObject<UserDTO>(jsonResult);
+            Assert.NotNull(registroSelecionado);
+            Assert.Equal(registroSelecionado.Name, registroAtualizado.Name);
+
+            //DELETE
+            response = await client.DeleteAsync($"{hostApi}users/{registroAtualizado.Id}");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+
         }
 
     }
