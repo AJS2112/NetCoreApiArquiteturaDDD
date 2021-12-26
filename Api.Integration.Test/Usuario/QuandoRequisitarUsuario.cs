@@ -1,4 +1,7 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Api.Domain.DTOs.User;
@@ -24,7 +27,7 @@ namespace Api.Integration.Test.Usuario
                 Name = _name,
                 Email = _email
             };
-
+            //POST
             var response = await PostJsonAsync(userDto, $"{hostApi}users", client);
             var postResult = await response.Content.ReadAsStringAsync();
             var registroPost = JsonConvert.DeserializeObject<UserCreateResultDTO>(postResult);
@@ -34,6 +37,16 @@ namespace Api.Integration.Test.Usuario
             Assert.Equal(_email, registroPost.Email);
             Assert.False(registroPost.Id == default(Guid));
 
+
+            //GETALL
+            response = await client.GetAsync($"{hostApi}users");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            var jsonResult = await response.Content.ReadAsStringAsync();
+            var listaFromJson = JsonConvert.DeserializeObject<IEnumerable<UserDTO>>(jsonResult);
+            Assert.NotNull(listaFromJson);
+            Assert.True(listaFromJson.Count() > 0);
+            Assert.True(listaFromJson.Where(r => r.Id == registroPost.Id).Count() == 1);
         }
 
     }
